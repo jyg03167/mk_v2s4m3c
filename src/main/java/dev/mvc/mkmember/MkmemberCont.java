@@ -378,12 +378,87 @@ public class MkmemberCont {
     map.put("memcateno", new_memcateno);
     map.put("memberno", memberno);
     
+    memcateProc.decreaseCnt(memcateno);
+    memcateProc.increaseCnt(new_memcateno);
+    
     mkmemberProc.grade_update(map);
     
-    mav.setViewName("redirect:/mkmember/grade_update_success_msg.jsp");
+    mav.setViewName("redirect:/mkmember/grade_update_msg.jsp");
 
     return mav;
   }
   
+  // http://localhost:9090/team3/mkmember/withdraw.do 
+  // Å»Åð µ¿ÀÇ Æû
+  @RequestMapping(value="/mkmember/withdraw.do",
+                            method=RequestMethod.GET)
+  public ModelAndView withdraw(int memberno){
+    ModelAndView mav = new ModelAndView();
+    
+    mav.setViewName("/mkmember/withdraw");
+    
+    return mav;
+  }
   
+  // Å»Åð µ¿ÀÇ Ã³¸®
+  @RequestMapping(value="/mkmember/withdraw.do",
+        method=RequestMethod.POST)
+  public ModelAndView withdraw(RedirectAttributes ra,
+                                           HttpServletRequest request,
+                                           int memberno){
+    ModelAndView mav = new ModelAndView(); 
+    
+    ra.addAttribute("memberno", memberno);
+    ra.addAttribute("memcateno", mkmemberProc.read(memberno).getMemcateno());
+
+    mav.setViewName("redirect:/mkmember/withdraw_passwd_check.jsp");
+
+    return mav;
+  }    
+  
+  // Å»Åð½Ã ºñ¹Ð¹øÈ£ °Ë»ç Æû
+  @RequestMapping(value="/mkmember/withdraw_passwd_check.do",
+                            method=RequestMethod.GET)
+  public ModelAndView withdraw_passwd_check(){
+    ModelAndView mav = new ModelAndView();
+    
+    mav.setViewName("/mkmember/withdraw_passwd_check");
+    
+    return mav;
+  }
+  
+  // Å»Åð½Ã ºñ¹Ð¹øÈ£ °Ë»ç Ã³¸®
+  @RequestMapping(value="/mkmember/withdraw_passwd_check.do",
+        method=RequestMethod.POST)
+  public ModelAndView withdraw_passwd_check(RedirectAttributes ra, HttpSession session,
+                                                                   int memberno, String passwd, int memcateno){
+    ModelAndView mav = new ModelAndView(); 
+
+    // ÆÐ½º¿öµå °Ë»ç
+    HashMap<Object, Object> map = new HashMap<Object, Object>();
+    map.put("memberno", memberno);
+    map.put("passwd", passwd);
+    
+    int count = mkmemberProc.passwd_check(map);
+    ra.addAttribute("count", count);
+
+    if(count == 1) {
+      HashMap<Object, Object> map2 = new HashMap<Object, Object>();
+      
+      map2.put("memcateno", 3);
+      map2.put("memberno", memberno);
+      
+      memcateProc.decreaseCnt(memcateno);
+      memcateProc.increaseCnt(3);
+        
+      mkmemberProc.grade_update(map2);
+      
+      session.invalidate(); // ¸ðµç session º¯¼ö »èÁ¦
+    }
+
+    mav.setViewName("redirect:/mkmember/withdraw_msg.jsp");
+
+    return mav;
+  }
+
 }
