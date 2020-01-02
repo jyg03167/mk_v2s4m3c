@@ -173,6 +173,22 @@
         <version>${org.springframework-version}</version>
         <scope>test</scope>
     </dependency>
+    
+   <!--  전송된 파일 저장 기능 지원 -->
+    <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+ 
+    <!--  fileupload에서 입출력에 필요한 library  -->
+    <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+    </dependency>
 <!-- ******************** 추가 선언 영역 종료 ******************** -->
   </dependencies>
     <build>
