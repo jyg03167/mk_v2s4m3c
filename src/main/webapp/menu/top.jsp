@@ -9,7 +9,15 @@
     <div class="container-fluid" style="width: 100%;">
     <ul class="nav navbar-nav navbar-right">
       <li><a href='${root}/mkmember/create.do' style="color: #FFFFFF; font-size: 14px;"><span class="glyphicon glyphicon-user" style="color: #FFFFFF;"></span> 회원가입</a></li>
-      <li><a href='${root}/mkmember/login.do'  style="color: #FFFFFF; font-size: 14px;"><span class="glyphicon glyphicon-log-in" style="color: #FFFFFF;"></span> 로그인</a></li>
+      <c:choose>
+        <c:when test="${sessionScope.id == null}"> <!-- 로그인 되어있지 않을 때 -->
+          <li><a href='${root}/mkmember/login.do'  style="color: #FFFFFF; font-size: 14px;"><span class="glyphicon glyphicon-log-in" style="color: #FFFFFF;"></span> 로그인</a></li>
+        </c:when>
+        <c:otherwise> <!-- 로그인 되어있을 때 -->
+          <li><a href='${root}/mkmember/logout.do'  style="color: #FFFFFF; font-size: 14px;">
+          <span class="glyphicon glyphicon-log-out" style="color: #FFFFFF; margin-right: 4px;"></span>${sessionScope.id }님 로그아웃</a></li>
+        </c:otherwise>
+      </c:choose>  
     </ul>
     </div>
     <!-- 상단 메뉴 -->
@@ -30,7 +38,22 @@
         <li><a href="#">마이페이지</a></li>
         <li><a href="${root }/cart/cartlist.do?cartgrpno=1" >장바구니</a></li>
       </ul>
+      <!-- 관리자용 메뉴 -->
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="${root }/memcate/list.do">멤버카테고리</a></li>
+        <c:choose>
+          <c:when test="${sessionScope.id_admin == null}"> <!-- 관리자 로그인 되어있지 않을 때 -->
+            <li><a href="${root}/admin/login.do">관리자로그인</a></li>
+          </c:when>
+          <c:otherwise> <!-- 관리자 로그인 되어있을 때 -->
+            <li><a href="${root}/admin/logout.do">${sessionScope.id_admin }님 로그아웃</a></li>
+          </c:otherwise>
+        </c:choose>
+      </ul>   
+      
     </div> 
+    
+    
   </nav>
 
    

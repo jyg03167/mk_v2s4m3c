@@ -33,7 +33,6 @@ function send() {
   
   frm.submit(); // submit 진행
 }
-  
 </script> 
  
 </head> 
